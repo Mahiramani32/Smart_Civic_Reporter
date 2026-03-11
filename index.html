@@ -1,0 +1,1210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Civic Reporter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Variables for consistent theming */
+    :root {
+      --primary: #2E7D32;
+      --primary-dark: #1B5E20;
+      --primary-light: #4CAF50;
+      --secondary: #FF9800;
+      --accent: #2196F3;
+      --text: #333333;
+      --text-light: #757575;
+      --background: #F5F5F5;
+      --card-bg: #FFFFFF;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --radius: 8px;
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--background);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 1.5rem 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo i {
+      font-size: 2rem;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      text-align: center;
+      max-width: 600px;
+      opacity: 0.9;
+    }
+
+    nav {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    nav button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    nav button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    nav button.active {
+      background-color: white;
+      color: var(--primary);
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      width: 100%;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Home Page */
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero h2 {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0.5rem 0;
+    }
+
+    .stat-label {
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+
+    .how-it-works {
+      margin-top: 3rem;
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--primary);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .step {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .step h3 {
+      margin: 1rem 0 0.5rem;
+      color: var(--primary);
+    }
+
+    /* Form Styles */
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+    }
+
+    .btn-secondary:hover {
+      background: #F57C00;
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+    .location-help {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    /* Issues Feed */
+    .feed-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .feed-controls .form-group {
+      flex: 1;
+      min-width: 200px;
+      margin-bottom: 0;
+    }
+
+    .issues-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .issue-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .issue-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .issue-image {
+      height: 160px;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+    }
+
+    .issue-content {
+      padding: 1.5rem;
+    }
+
+    .issue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .issue-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .issue-category {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--primary-light);
+      color: white;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .issue-location {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .issue-description {
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .issue-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .issue-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    .status-reported {
+      background: #FFF3E0;
+      color: #EF6C00;
+    }
+
+    .status-in-progress {
+      background: #E3F2FD;
+      color: #1976D2;
+    }
+
+    .status-resolved {
+      background: #E8F5E9;
+      color: var(--primary);
+    }
+
+    /* Details Page */
+    .back-btn {
+      margin-bottom: 1.5rem;
+    }
+
+    .issue-detail-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-image {
+      height: 300px;
+      background: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+    }
+
+    .detail-content {
+      padding: 2rem;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-light);
+    }
+
+    .detail-description {
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-dark);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+
+    .footer-links a:hover {
+      opacity: 0.8;
+    }
+
+    .copyright {
+      margin-top: 1.5rem;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .header-content {
+        gap: 1rem;
+      }
+      
+      .logo h1 {
+        font-size: 1.5rem;
+      }
+      
+      .tagline {
+        font-size: 1rem;
+      }
+      
+      nav button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+      }
+      
+      .hero h2 {
+        font-size: 1.8rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .form-container {
+        padding: 1.5rem;
+      }
+      
+      .issues-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .detail-content {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .steps {
+        grid-template-columns: 1fr;
+      }
+      
+      .feed-controls {
+        flex-direction: column;
+      }
+      
+      .feed-controls .form-group {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-flag"></i>
+        <h1>Smart Civic Reporter</h1>
+      </div>
+      <p class="tagline">Help make your community better by reporting issues and tracking their resolution</p>
+      <nav>
+        <button id="homeBtn" class="active"><i class="fas fa-home"></i> Home</button>
+        <button id="reportBtn"><i class="fas fa-plus-circle"></i> Report Issue</button>
+        <button id="viewBtn"><i class="fas fa-list"></i> View Issues</button>
+        <button id="loginBtn"><i class="fas fa-user"></i> Login/Register</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="hero">
+        <h2>Welcome to Smart Civic Reporter</h2>
+        <p>Your platform for reporting and tracking community issues. Together we can make our neighborhoods cleaner, safer, and better maintained.</p>
+        <button class="btn btn-secondary" id="heroReportBtn">
+          <i class="fas fa-plus-circle"></i> Report an Issue Now
+        </button>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <i class="fas fa-flag"></i>
+          <div class="stat-number" id="totalIssues">0</div>
+          <div class="stat-label">Issues Reported</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-check-circle"></i>
+          <div class="stat-number" id="resolvedIssues">0</div>
+          <div class="stat-label">Issues Resolved</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-users"></i>
+          <div class="stat-number" id="activeUsers">0</div>
+          <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-card">
+          <i class="fas fa-map-marker-alt"></i>
+          <div class="stat-number" id="neighborhoods">0</div>
+          <div class="stat-label">Neighborhoods</div>
+        </div>
+      </div>
+
+      <div class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <i class="fas fa-camera fa-2x" style="color: var(--primary);"></i>
+            <h3>Report an Issue</h3>
+            <p>Take a photo, add a description, and pinpoint the location of the issue you've found in your community.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <i class="fas fa-bullhorn fa-2x" style="color: var(--primary);"></i>
+            <h3>Share & Track</h3>
+            <p>Your report is shared with local authorities and other community members. Track its progress in real-time.</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <i class="fas fa-check-double fa-2x" style="color: var(--primary);"></i>
+            <h3>See Results</h3>
+            <p>Get notified when issues are resolved and see the positive impact you're making in your community.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="report" class="page">
+      <div class="form-container">
+        <h2><i class="fas fa-plus-circle"></i> Report an Issue</h2>
+        <form id="reportForm">
+          <div class="form-group">
+            <label for="photo">Photo (optional)</label>
+            <input type="file" id="photo" accept="image/*">
+          </div>
+          
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="Enter address or use current location">
+            <div class="location-help">
+              <i class="fas fa-info-circle"></i>
+              <span>You can enter an address or use your current location</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category">
+              <option>Pothole</option>
+              <option>Garbage</option>
+              <option>Streetlight</option>
+              <option>Water</option>
+              <option>Electricity</option>
+              <option>Traffic Signal</option>
+              <option>Parks & Recreation</option>
+              <option>Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" placeholder="Please provide a detailed description of the issue..."></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-block">
+            <i class="fas fa-paper-plane"></i> Submit Report
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="feed" class="page">
+      <h2><i class="fas fa-list"></i> Issues Feed</h2>
+      
+      <div class="feed-controls">
+        <div class="form-group">
+          <label for="searchIssues">Search Issues</label>
+          <input type="text" id="searchIssues" placeholder="Search by keyword...">
+        </div>
+        
+        <div class="form-group">
+          <label for="filterCategory">Filter by Category</label>
+          <select id="filterCategory">
+            <option value="all">All Categories</option>
+            <option value="Pothole">Pothole</option>
+            <option value="Garbage">Garbage</option>
+            <option value="Streetlight">Streetlight</option>
+            <option value="Water">Water</option>
+            <option value="Electricity">Electricity</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="sortBy">Sort By</label>
+          <select id="sortBy">
+            <option value="priority">Priority (default)</option>
+            <option value="location">Location (cluster)</option>
+            <option value="category">Category</option>
+            <option value="date">Date Reported</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="issues-grid" id="issuesList">
+        <!-- Issues will be dynamically loaded here -->
+      </div>
+    </section>
+
+    <section id="details" class="page">
+      <button class="btn back-btn" id="backToFeed">
+        <i class="fas fa-arrow-left"></i> Back to Issues
+      </button>
+      
+      <div class="issue-detail-card">
+        <div class="detail-image" id="detailImage">
+          <i class="fas fa-image fa-5x"></i>
+        </div>
+        <div class="detail-content">
+          <div class="detail-header">
+            <div>
+              <div class="detail-title" id="detailTitle">Issue Title</div>
+              <div class="issue-category" id="detailCategory">Category</div>
+            </div>
+            <div class="issue-status" id="detailStatus">Status</div>
+          </div>
+          
+          <div class="detail-meta">
+            <div class="meta-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span id="detailLocation">Location</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span id="detailDate">Date</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-user"></i>
+              <span id="detailReporter">Reporter</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-heart"></i>
+              <span id="detailLikes">0 likes</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-star"></i>
+              <span id="detailPriority">Priority: 0</span>
+            </div>
+          </div>
+          
+          <div class="detail-description" id="detailDescription">
+            Issue description will appear here.
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn" id="likeBtn">
+              <i class="fas fa-thumbs-up"></i> Like Issue
+            </button>
+            <button class="btn" id="markInProgressBtn">
+              <i class="fas fa-tools"></i> Mark In-Progress
+            </button>
+            <button class="btn" id="markResolvedBtn">
+              <i class="fas fa-check-circle"></i> Mark Resolved
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="login" class="page">
+      <div class="form-container">
+        <h2><i class="fas fa-user"></i> Login / Register</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <input type="text" id="name" placeholder="Full Name" required>
+          </div>
+          
+          <div class="form-group">
+            <input type="email" id="email" placeholder="Email Address" required>
+          </div>
+          
+          <div class="form-group">
+            <input type="tel" id="phone" placeholder="Phone Number (optional)">
+          </div>
+          
+          <div class="form-group">
+            <label for="role">I am a:</label>
+            <select id="role">
+              <option>Resident</option>
+              <option>Community Leader</option>
+              <option>Local Authority</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="btn btn-block">
+            <i class="fas fa-check-circle"></i> Save & Continue
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="admin" class="page">
+      <div class="form-container">
+        <h2><i class="fas fa-tachometer-alt"></i> Authority Dashboard</h2>
+        <p>This section is for authorized personnel to manage and track reported issues.</p>
+        
+        <div class="stats">
+          <div class="stat-card">
+            <i class="fas fa-flag"></i>
+            <div class="stat-number" id="newIssues">0</div>
+            <div class="stat-label">New Issues</div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-tools"></i>
+            <div class="stat-number" id="inProgressIssues">0</div>
+            <div class="stat-label">In Progress</div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-check-circle"></i>
+            <div class="stat-number" id="resolvedThisWeek">0</div>
+            <div class="stat-label">Resolved This Week</div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 2rem; text-align: center;">
+          <button class="btn" id="exportReport">
+            <i class="fas fa-download"></i> Download Report (JSON)
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <h3>Smart Civic Reporter</h3>
+      <p>Empowering communities to report and resolve local issues together</p>
+      
+      <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">How It Works</a>
+        <a href="#">Success Stories</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2023 Smart Civic Reporter. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Application logic
+    document.addEventListener('DOMContentLoaded', () => {
+      // Utility functions
+      function uuid() {
+        return 'id-' + Math.random().toString(36).slice(2, 9);
+      }
+
+      const STORE_KEY = 'smart_civic_issues_v1';
+      
+      function loadIssues() {
+        const raw = localStorage.getItem(STORE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      }
+      
+      function saveIssues(list) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(list));
+      }
+      
+      function computePriority(issue) {
+        const urgencyScore = {
+          'Electricity': 100,
+          'Water': 80,
+          'Streetlight': 60,
+          'Garbage': 40,
+          'Pothole': 20,
+          'Traffic Signal': 90,
+          'Parks & Recreation': 30,
+          'Other': 10
+        };
+        
+        const likes = issue.likes || 0;
+        const base = urgencyScore[issue.category] || 10;
+        const statusBonus = issue.status === 'In-progress' ? 10 : (issue.status === 'Resolved' ? 20 : 0);
+        return base + likes * 5 + statusBonus;
+      }
+      
+      // DOM helpers
+      const pages = document.querySelectorAll('.page');
+      
+      function showPage(id) {
+        pages.forEach(p => {
+          p.id === id ? p.classList.add('active') : p.classList.remove('active');
+        });
+        
+        if (id === 'home') renderStats();
+        if (id === 'feed') renderFeed();
+        if (id === 'admin') renderAdmin();
+      }
+      
+      // Event bindings
+      document.getElementById('homeBtn').onclick = () => showPage('home');
+      document.getElementById('reportBtn').onclick = () => showPage('report');
+      document.getElementById('viewBtn').onclick = () => showPage('feed');
+      document.getElementById('loginBtn').onclick = () => showPage('login');
+      document.getElementById('heroReportBtn').onclick = () => showPage('report');
+      document.getElementById('backToFeed').onclick = () => showPage('feed');
+      document.getElementById('sortBy').onchange = renderFeed;
+      document.getElementById('filterCategory').onchange = renderFeed;
+      document.getElementById('searchIssues').oninput = renderFeed;
+      
+      // Photo handling
+      const photoInput = document.getElementById('photo');
+      let lastPhotoDataUrl = "";
+      
+      photoInput.addEventListener('change', ev => {
+        const f = ev.target.files[0];
+        if (!f) {
+          lastPhotoDataUrl = "";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = e => {
+          lastPhotoDataUrl = e.target.result;
+        };
+        reader.readAsDataURL(f);
+      });
+      
+      // Report form handler
+      document.getElementById('reportForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const issues = loadIssues();
+        const id = uuid();
+        const issue = {
+          id,
+          photo: lastPhotoDataUrl || "",
+          location: document.getElementById('location').value || 'Unknown',
+          category: document.getElementById('category').value,
+          description: document.getElementById('description').value || '',
+          likes: 0,
+          status: 'Pending',
+          timestamp: Date.now(),
+          reporter: document.getElementById('name').value || 'Anonymous'
+        };
+        issue.priority = computePriority(issue);
+        issues.push(issue);
+        saveIssues(issues);
+        
+        // Reset form
+        document.getElementById('reportForm').reset();
+        lastPhotoDataUrl = "";
+        alert('Issue reported successfully! Thank you for your contribution.');
+        showPage('feed');
+      });
+      
+      // Login form handler
+      document.getElementById('loginForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const user = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          role: document.getElementById('role').value
+        };
+        localStorage.setItem('smart_civic_user', JSON.stringify(user));
+        alert('Profile saved successfully!');
+        showPage('home');
+      });
+      
+      // Stats rendering
+      function renderStats() {
+        const issues = loadIssues();
+        const total = issues.length;
+        const resolved = issues.filter(i => i.status === 'Resolved').length;
+        const users = JSON.parse(localStorage.getItem('smart_civic_user')) ? 1 : 0;
+        
+        // Count unique locations
+        const locations = new Set(issues.map(i => i.location));
+        
+        document.getElementById('totalIssues').textContent = total;
+        document.getElementById('resolvedIssues').textContent = resolved;
+        document.getElementById('activeUsers').textContent = users;
+        document.getElementById('neighborhoods').textContent = locations.size;
+      }
+      
+      // Feed rendering
+      function renderFeed() {
+        const issues = loadIssues();
+        const sortBy = document.getElementById('sortBy').value;
+        const filterCategory = document.getElementById('filterCategory').value;
+        const searchTerm = document.getElementById('searchIssues').value.toLowerCase();
+        
+        // Filter issues
+        let filteredIssues = issues.filter(issue => {
+          const matchesCategory = filterCategory === 'all' || issue.category === filterCategory;
+          const matchesSearch = searchTerm === '' || 
+            issue.description.toLowerCase().includes(searchTerm) ||
+            issue.location.toLowerCase().includes(searchTerm) ||
+            issue.category.toLowerCase().includes(searchTerm);
+          
+          return matchesCategory && matchesSearch;
+        });
+        
+        // Sort issues
+        if (sortBy === 'priority') {
+          filteredIssues.sort((a, b) => b.priority - a.priority);
+        } else if (sortBy === 'category') {
+          filteredIssues.sort((a, b) => a.category.localeCompare(b.category));
+        } else if (sortBy === 'location') {
+          filteredIssues.sort((a, b) => a.location.localeCompare(b.location));
+        } else if (sortBy === 'date') {
+          filteredIssues.sort((a, b) => b.timestamp - a.timestamp);
+        }
+        
+        const container = document.getElementById('issuesList');
+        container.innerHTML = '';
+        
+        if (filteredIssues.length === 0) {
+          container.innerHTML = '<p>No issues found matching your criteria.</p>';
+          return;
+        }
+        
+        filteredIssues.forEach(issue => {
+          const card = document.createElement('div');
+          card.className = 'issue-card';
+          card.innerHTML = `
+            <div class="issue-image">
+              ${issue.photo ? `<img src="${issue.photo}" alt="Issue photo" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-image fa-3x"></i>'}
+            </div>
+            <div class="issue-content">
+              <div class="issue-header">
+                <div>
+                  <div class="issue-title">${issue.category}</div>
+                  <div class="issue-category">${issue.category}</div>
+                </div>
+              </div>
+              <div class="issue-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>${issue.location}</span>
+              </div>
+              <div class="issue-description">
+                ${issue.description.substring(0, 100)}${issue.description.length > 100 ? '...' : ''}
+              </div>
+              <div class="issue-footer">
+                <div class="issue-date">${new Date(issue.timestamp).toLocaleDateString()}</div>
+                <div class="issue-status status-${issue.status.toLowerCase().replace('-', '')}">${issue.status}</div>
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => showDetails(issue.id));
+          container.appendChild(card);
+        });
+      }
+      
+      // Details page
+      let currentIssueId = null;
+      
+      function showDetails(id) {
+        const issues = loadIssues();
+        const issue = issues.find(i => i.id === id);
+        
+        if (!issue) {
+          showPage('feed');
+          return;
+        }
+        
+        currentIssueId = id;
+        showPage('details');
+        
+        // Update detail view
+        document.getElementById('detailTitle').textContent = issue.category;
+        document.getElementById('detailCategory').textContent = issue.category;
+        document.getElementById('detailStatus').textContent = issue.status;
+        document.getElementById('detailStatus').className = `issue-status status-${issue.status.toLowerCase().replace('-', '')}`;
+        document.getElementById('detailLocation').textContent = issue.location;
+        document.getElementById('detailDate').textContent = new Date(issue.timestamp).toLocaleDateString();
+        document.getElementById('detailReporter').textContent = issue.reporter || 'Anonymous';
+        document.getElementById('detailLikes').textContent = `${issue.likes || 0} likes`;
+        document.getElementById('detailPriority').textContent = `Priority: ${issue.priority}`;
+        document.getElementById('detailDescription').textContent = issue.description;
+        
+        // Update image
+        const detailImage = document.getElementById('detailImage');
+        if (issue.photo) {
+          detailImage.innerHTML = `<img src="${issue.photo}" alt="Issue photo" style="width:100%;height:100%;object-fit:cover;">`;
+        } else {
+          detailImage.innerHTML = '<i class="fas fa-image fa-5x"></i>';
+        }
+        
+        // Set up action buttons
+        document.getElementById('likeBtn').onclick = () => likeIssue(id);
+        document.getElementById('markInProgressBtn').onclick = () => updateIssueStatus(id, 'In-progress');
+        document.getElementById('markResolvedBtn').onclick = () => updateIssueStatus(id, 'Resolved');
+      }
+      
+      function likeIssue(id) {
+        const issues = loadIssues();
+        const issue = issues.find(i => i.id === id);
+        
+        if (issue) {
+          issue.likes = (issue.likes || 0) + 1;
+          issue.priority = computePriority(issue);
+          saveIssues(issues);
+          showDetails(id); // Refresh the details view
+        }
+      }
+      
+      function updateIssueStatus(id, status) {
+        const issues = loadIssues();
+        const issue = issues.find(i => i.id === id);
+        
+        if (issue) {
+          issue.status = status;
+          issue.priority = computePriority(issue);
+          saveIssues(issues);
+          showDetails(id); // Refresh the details view
+        }
+      }
+      
+      // Admin dashboard
+      function renderAdmin() {
+        const issues = loadIssues();
+        
+        // Update stats
+        const newIssues = issues.filter(i => i.status === 'Pending').length;
+        const inProgress = issues.filter(i => i.status === 'In-progress').length;
+        
+        // Count resolved this week
+        const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+        const resolvedThisWeek = issues.filter(i => 
+          i.status === 'Resolved' && i.timestamp > oneWeekAgo
+        ).length;
+        
+        document.getElementById('newIssues').textContent = newIssues;
+        document.getElementById('inProgressIssues').textContent = inProgress;
+        document.getElementById('resolvedThisWeek').textContent = resolvedThisWeek;
+      }
+      
+      // Export functionality
+      document.getElementById('exportReport').onclick = () => {
+        const data = loadIssues();
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'issues_report.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+      
+      // Initialize the application
+      showPage('home');
+    });
+  </script>
+</body>
+</html>

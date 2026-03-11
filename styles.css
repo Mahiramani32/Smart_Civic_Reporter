@@ -1,0 +1,20 @@
+:root{--bg:#f7f8fb;--card:#fff;--accent:#2b6cb0}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Arial,Helvetica,sans-serif;background:var(--bg);margin:0;color:#1a202c}
+header{background:linear-gradient(90deg,#2b6cb0,#2c7a7b);color:#fff;padding:18px}
+header h1{margin:0;font-size:20px}
+nav{margin-top:8px}
+nav button{margin-right:8px;padding:8px 12px;border-radius:8px;border:none;background:#fff;color:#2b6cb0;cursor:pointer}
+main{padding:18px}
+.page{display:none}
+.page.active{display:block}
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.card img{max-width:100%;border-radius:6px}
+.controls{margin-bottom:12px}
+button.like{background:none;border:1px solid #e2e8f0;padding:6px 10px;border-radius:8px;cursor:pointer}
+.stats{background:#fff;padding:12px;border-radius:10px;display:inline-block}
+footer{padding:12px;text-align:center;color:#718096}
+label{display:block;margin:8px 0}
+input,textarea,select{width:100%;padding:8px;border-radius:6px;border:1px solid #e2e8f0}
+#issueDetails{margin-top:12px}

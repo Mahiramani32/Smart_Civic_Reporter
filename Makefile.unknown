@@ -1,0 +1,10 @@
+CXX = g++
+CXXFLAGS = -std=c++17 -O2 -Wall
+
+all: demo
+
+demo: demo.cpp
+	$(CXX) $(CXXFLAGS) -o demo demo.cpp
+
+clean:
+	rm -f demo
